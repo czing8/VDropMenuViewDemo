@@ -8,20 +8,17 @@
 
 #import "VDropMenuView.h"
 
-@implementation VDropMenuView
-{
+@implementation VDropMenuView {
+    BOOL isShow;    //YES已展开，NO已收起
+    NSInteger selectIndex;  //当前选择index
     
-    BOOL isShow;//YES已展开，NO已收起
-    NSInteger selectIndex;//当前选择index
-    
-    NSInteger itemCount;//按钮个数
+    NSInteger itemCount;    //按钮个数
     
     CGRect maxShowRect;
     CGRect minShowRect;
 }
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         
@@ -45,12 +42,12 @@
     float ww = self.frame.size.width/itemCount;
     float hh = self.frame.size.height;
     
-    for (int i = 0; i<itemCount; i++) {
+    for (int i = 0; i < itemCount; i++) {
         
         VMenuItem* btn = [[VMenuItem alloc] initWithFrame:CGRectMake(ww*i, 0, ww, hh)];
         btn.tag = 100+i;
         [btn setTitle:[_dataSource menuView:self titleForItemAtIndex:i]];
-        [btn setMarkImg:[UIImage imageNamed:@"mark1.png"]];
+        [btn setMarkImg:[UIImage imageNamed:@"mark1"]];
         [btn setMarkAlignment:2];
         [self addSubview:btn];
         
@@ -81,7 +78,6 @@
 }
 - (void)tapClose{
     [self closeCurViewOnIndex:selectIndex isCloseShowView:YES];
-    
 }
 
 #pragma mark - item选择
@@ -90,16 +86,13 @@
     self.userInteractionEnabled = NO;
     
     VMenuItem* btn = (VMenuItem*)sender.view;
-    if (isShow)
-    {
+    if (isShow) {
         //
-        if (selectIndex == sender.view.tag-100)
-        {
+        if (selectIndex == sender.view.tag-100) {
             //移除当前
             [self closeCurViewOnIndex:selectIndex isCloseShowView:YES];
         }
-        else
-        {
+        else  {
             //先关闭当前
             [self closeCurViewOnIndex:selectIndex isCloseShowView:NO];
             
@@ -107,8 +100,7 @@
             [self showTListViewWIthSelectItemView:btn];
         }
     }
-    else
-    {
+    else  {
         //展开新的
         [self showTListViewWIthSelectItemView:btn];
     }
@@ -130,10 +122,7 @@
     [UIView animateWithDuration:DurationTime animations:^{
         sender.markImgView.transform = CGAffineTransformRotate(sender.markImgView.transform, -M_PI);
     } completion:^(BOOL ok){
-        if (ok) {
-            
-            self.userInteractionEnabled = YES;
-        }
+        if (ok)  self.userInteractionEnabled = YES;
     }];
     
     isShow = YES;
@@ -149,7 +138,6 @@
         _showView.frame = maxShowRect;
         _showView.accessibilityIdentifier = @"YES";
         [UIView animateWithDuration:DurationTime animations:^{
-            //
             _showView.backgroundColor = [UIColor colorWithRed:0.145 green:0.145 blue:0.145 alpha:0.65];
         }];
     }
@@ -161,7 +149,6 @@
     [_showView addSubview:nowView];
     
     [UIView animateWithDuration:DurationTime animations:^{
-        //
         nowView.frame = CGRectMake(0, 0, nowView.frame.size.width, [_dataSource menuView:self heightForCurViewAtIndex:selectIndex]);
     }completion:^(BOOL finished) {
         //
@@ -198,6 +185,8 @@
         }];
     }
 }
+
+
 
 - (void)removeTListViewWithSelectItemView:(VMenuItem*)sender{
     

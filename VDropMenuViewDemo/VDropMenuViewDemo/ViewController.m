@@ -17,7 +17,6 @@
     UITableView* tableview;
 }
 
-
 @end
 
 @implementation ViewController
@@ -27,10 +26,10 @@
     
     self.title = @"T型展开菜单";
     
+    
     tableview = [[UITableView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:tableview];
     tableview.contentInset = UIEdgeInsetsMake(44, 0, 0, 0);
-    
     
     menuInfo = @[@"全部分类",@"地区",@"综合排序",@"优惠活动"];
     
@@ -65,9 +64,11 @@
 - (NSInteger)numberOfItemsInMenuView:(VDropMenuView *)menuview{
     return menuInfo.count;
 }
+
 - (NSString*)menuView:(VDropMenuView *)menuview titleForItemAtIndex:(NSInteger)index{
     return menuInfo[index];
 }
+
 - (CGFloat)menuView:(VDropMenuView *)menuview heightForCurViewAtIndex:(NSInteger)index{
     return 200+index*50;
 }

@@ -19,10 +19,10 @@
 
 - (NSInteger)numberOfItemsInMenuView:(VDropMenuView*)menuView;
 
-- (NSString*)menuView:(VDropMenuView*)menuView titleForItemAtIndex:(NSInteger)index;
+- (NSString *)menuView:(VDropMenuView*)menuView titleForItemAtIndex:(NSInteger)index;
 
 - (CGFloat)menuView:(VDropMenuView*)menuView heightForCurViewAtIndex:(NSInteger)index;
-- (UIView*)menuView:(VDropMenuView*)menuView curViewAtIndex:(NSInteger)index;
+- (UIView *)menuView:(VDropMenuView*)menuView curViewAtIndex:(NSInteger)index;
 
 @end
 

@@ -20,11 +20,9 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        //
         self.frame = frame;
         self.clipsToBounds = NO;
         
-        //
         bgImgView = [[UIImageView alloc] initWithFrame:self.bounds];
         bgImgView.backgroundColor = [UIColor clearColor];
         bgImgView.contentMode = UIViewContentModeScaleAspectFill;
@@ -55,52 +53,22 @@
 #pragma mark - A
 
 - (void)setTitle:(NSString *)title{
-    _title = title;
-    
-    _titleLabel.text = title;
-    
-    switch (_markAlignment) {
-        case 0:{
-            //
-            [self markAlignmentNone];
-            break;
-        }
-        case 1:{
-            [self markAlignmentLeft];
-            break;
-        }
-        case 2:{
-            [self markAlignmentRight];
-            break;
-        }
-        default:
-            
-            break;
+    if (_title != title) {
+        _title = title;
+        _titleLabel.text = title;
+
+        [self reloadView];
     }
 }
 
 - (void)setMarkImg:(UIImage *)markImg{
-    _markImg = markImg;
-    _markImgView.image = markImg;
-    _markImgView.hidden = NO;
     
-    switch (_markAlignment) {
-        case 0:{
-            //
-            [self markAlignmentNone];
-            break;
-        }
-        case 1:{
-            [self markAlignmentLeft];
-            break;
-        }
-        case 2:{
-            [self markAlignmentRight];
-            break;
-        }
-        default:
-            
-            break;
+    if (_markImg != markImg) {
+        _markImg = markImg;
+        _markImgView.image = markImg;
+        _markImgView.hidden = NO;
+        
+        [self reloadView];
     }
 }
 
@@ -111,22 +79,9 @@
 
 - (void)setMarkAlignment:(MarkAlignment)markAlignment{
     
-    _markAlignment = markAlignment;
-    switch (markAlignment) {
-        case 0:{
-            [self markAlignmentNone];
-            break;
-        }
-        case 1:{
-            [self markAlignmentLeft];
-            break;
-        }
-        case 2:{
-            [self markAlignmentRight];
-            break;
-        }
-        default:
-            break;
+    if (_markAlignment != markAlignment) {
+        _markAlignment = markAlignment;
+        [self reloadView];
     }
 }
 
@@ -167,17 +122,29 @@
 
 #pragma mark - else
 
+- (void)reloadView{
+    
+    if (_markAlignment == MarkAlignmentNone) {
+        [self markAlignmentNone];
+        
+    }else if (_markAlignment == MarkAlignmentLeft) {
+        [self markAlignmentLeft];
+
+    }else if (_markAlignment == MarkAlignmentRight) {
+        [self markAlignmentRight];
+    }
+}
+
+
 //计算字符串size
 - (CGSize)getStringSizeWith:(NSString*)_mystr boundingRectWithSize:(CGSize)_boundSize font:(UIFont*)font{
     
-    if ([_mystr isEqual: [NSNull null]] || _mystr == nil || [_mystr isEqualToString: @""] || [_mystr isEqualToString: @"<null>"])
-    {
+    if ([_mystr isEqual: [NSNull null]] || _mystr == nil || [_mystr isEqualToString: @""] || [_mystr isEqualToString: @"<null>"]) {
         return CGSizeMake(_boundSize.width, 20);
     }
     
-    NSDictionary *attribute = @{NSFontAttributeName: font};
+    NSDictionary *attribute = @{NSFontAttributeName:font};
     CGSize size = [_mystr  boundingRectWithSize:_boundSize options: NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-    
     
     //    NSDictionary *attribute1 = @{NSFontAttributeName: [UIFont systemFontOfSize:18]};
     //
